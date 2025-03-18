@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diện tích và chu vi</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Tính diện tích và chu vi</h2>
+        <select id="shape" onchange="updateInputs()">
+            <option value="rectangle">Hình chữ nhật</option>
+            <option value="circle">Hình tròn</option>
+            <option value="triangle">Hình tam giác</option>
+        </select>
+
+        <div class="input-group" id="inputs"></div>
+
+        <button onclick="calculate()">Tính toán</button>
+
+        <div class="result" id="output"></div>
+    </div>
+
+    <script>
+        function updateInputs() {
+            let shape = document.getElementById("shape").value;
+            let inputs = "";
+            if (shape === "rectangle") {
+                inputs = '<input id="length" type="number" placeholder="Chiều dài">' +
+                         '<input id="width" type="number" placeholder="Chiều rộng">';
+            } else if (shape === "circle") {
+                inputs = '<input id="radius" type="number" placeholder="Bán kính">';
+            } else {
+                inputs = '<input id="a" type="number" placeholder="Cạnh a">' +
+                         '<input id="b" type="number" placeholder="Cạnh b">' +
+                         '<input id="c" type="number" placeholder="Cạnh c">';
+            }
+            document.getElementById("inputs").innerHTML = inputs;
+        }
+
+        function calculate() {
+            let shape = document.getElementById("shape").value;
+            let area = 0, perimeter = 0;
+
+            if (shape === "rectangle") {
+                let l = Number(document.getElementById("length").value);
+                let w = Number(document.getElementById("width").value);
+                if (l && w) { area = l * w; perimeter = 2 * (l + w); }
+            } else if (shape === "circle") {
+                let r = Number(document.getElementById("radius").value);
+                if (r) { area = Math.PI * r * r; perimeter = 2 * Math.PI * r; }
+            } else {
+                let a = Number(document.getElementById("a").value);
+                let b = Number(document.getElementById("b").value);
+                let c = Number(document.getElementById("c").value);
+                if (a && b && c && a + b > c && a + c > b && b + c > a) {
+                    let s = (a + b + c) / 2;
+                    area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+                    perimeter = a + b + c;
+                }
+            }
+            document.getElementById("output").innerHTML = area && perimeter ? `Diện tích: ${area.toFixed(2)}<br>Chu vi: ${perimeter.toFixed(2)}` : "Vui lòng nhập giá trị hợp lệ!";
+        }
+
+        window.onload = updateInputs;
+    </script>
+
+</body>
+</html>
